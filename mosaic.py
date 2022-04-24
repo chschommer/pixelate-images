@@ -1,5 +1,6 @@
 from PIL import Image
 import sys
+import os
 
 
 def avg_pixel_color_for_block(image, i_start, j_start, i_end, j_end):
@@ -46,8 +47,11 @@ def do_moasic(image, block_size):
 
 
 
-block_size = int(sys.argv[2])
-im = Image.open(sys.argv[1])
+block_size = int(sys.argv[1])
+
+directory = os.listdir(os.getcwd())
+
+im = Image.open(list(filter( lambda f: f.endswith(".jpg") or f.endswith(".jpeg"), directory))[0])
 rgb_im = im.convert('RGB')
 
 target = do_moasic(rgb_im, block_size)
