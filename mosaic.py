@@ -1,6 +1,10 @@
+#!/usr/bin/env python3
+
 from PIL import Image
 import sys
 import os
+import multiprocessing as mp
+from datetime import datetime
 
 
 def avg_pixel_color_for_block(image, i_start, j_start, i_end, j_end):
@@ -46,13 +50,30 @@ def do_moasic(image, block_size):
     return result 
 
 
+def do_Image(block_size):
+    block_size = block_size
 
-block_size = int(sys.argv[1])
+    directory = os.listdir(os.getcwd())
 
-directory = os.listdir(os.getcwd())
+    im = Image.open(list(filter( lambda f: f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".webp"), directory))[0])
+    rgb_im = im.convert('RGB')
 
-im = Image.open(list(filter( lambda f: f.endswith(".jpg") or f.endswith(".jpeg"), directory))[0])
-rgb_im = im.convert('RGB')
+    target = do_moasic(rgb_im, block_size)
+    target.save("result_" + str(block_size) + ".png")
 
-target = do_moasic(rgb_im, block_size)
-target.save("result_" + str(block_size) + ".png")
+    print("Done with ", block_size, datetime.now() - start)
+
+if __name__ == '__main__':
+
+    start = datetime.now()
+    pool = mp.Pool(mp.cpu_count())
+
+    for i in range(1, len(sys.argv)):
+         #do_Image(int(sys.argv[i]))
+         pool.apply_async(do_Image, (int(sys.argv[i]),))
+
+    pool.close()
+    pool.join()
+
+    print("Took ", datetime.now() - start)
+
