@@ -63,9 +63,11 @@ def do_Image(block_size):
 
     print("Done with ", block_size, datetime.now() - start)
 
+start = datetime.now()
+
 if __name__ == '__main__':
 
-    start = datetime.now()
+    
     pool = mp.Pool(mp.cpu_count())
 
     for i in range(1, len(sys.argv)):
