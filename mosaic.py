@@ -55,7 +55,7 @@ def do_Image(block_size):
 
     directory = os.listdir(os.getcwd())
 
-    im = Image.open(list(filter( lambda f: f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".webp"), directory))[0])
+    im = Image.open(list(filter( lambda f: f.endswith(".JPG") or f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".webp"), directory))[0])
     rgb_im = im.convert('RGB')
 
     target = do_moasic(rgb_im, block_size)
